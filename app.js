@@ -12,6 +12,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(upload.none());
 
-import formRouter from "./routes/form.route.js";
+import formRouter from "./src/routes/form.route.js";
 
 app.use("/api/form", formRouter);
+
+export default app;
