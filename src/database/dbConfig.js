@@ -8,5 +8,6 @@ export default async function ConnectDB() {
 		console.log(`Database connected to ${DBResponse.connection.name}`);
 	} catch (error) {
 		console.error(`Error connecting to database: ${error}`);
+		process.exit(1);
 	}
 }
