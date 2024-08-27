@@ -19,14 +19,14 @@ export const checkFormDetails = asyncHandler(async function (req, res, next) {
 			throw new Error("Full Name cannot be empty.");
 		}
 
-		if (rollNo.length !== 9 || isNaN(rollNo)) {
+		if (isNaN(rollNo) || String(rollNo).trim().length !== 9) {
 			res.status(400);
 			throw new Error(
 				"Roll number should be of 9 digits and should be a number",
 			);
 		}
 
-		if (phoneNo.length !== 10 || isNaN(phoneNo)) {
+		if (String(phoneNo).trim().length !== 10 || isNaN(phoneNo)) {
 			res.status(400);
 			throw new Error(
 				"Phone number should be of 10 digits and should be a number",
@@ -61,7 +61,7 @@ export const checkFormDetails = asyncHandler(async function (req, res, next) {
 			"CCA",
 			"CHE", //? add more branches if needed
 		];
-		if (!validBranches.includes(branch)) {
+		if (!validBranches.includes(branch.toUpperCase())) {
 			res.status(400);
 			throw new Error("Invalid Branch.");
 		}
@@ -78,11 +78,11 @@ export const checkFormDetails = asyncHandler(async function (req, res, next) {
 			email,
 			phoneNo,
 			department,
-			branch,
+			branch: branch.toUpperCase(),
 			year,
 		};
 		next();
 	} catch (error) {
-		res.json({ message: error.message });
+		res.json({ success: false, error, message: error.message });
 	}
 });

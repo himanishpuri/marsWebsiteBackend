@@ -19,13 +19,11 @@ export const formDetails = asyncHandler(async function (req, res, next) {
 		});
 
 		if (form) {
-			return res.status(200).json({
-				data: form,
-			});
+			res.status(409);
+			throw new Error("Student already exists");
 		}
-		form = await Form.create({
-			...req?.userInfo,
-		});
+
+		form = await Form.create({ ...req?.userInfo });
 
 		if (!form) {
 			res.status(400);
@@ -34,8 +32,9 @@ export const formDetails = asyncHandler(async function (req, res, next) {
 
 		return res.status(201).json({
 			data: form,
+			success: true,
 		});
 	} catch (error) {
-		res.json({ error, message: error?.message });
+		res.json({ success: false, error, message: error?.message });
 	}
 });
