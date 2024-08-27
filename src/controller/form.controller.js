@@ -3,18 +3,18 @@ import Form from "../models/form.model.js";
 
 export const formDetails = asyncHandler(async function (req, res, next) {
 	try {
-		if (!req?.userInfo) {
+		if (!req?.studentInfo) {
 			res.status(409);
 			throw new Error("Details not found");
 		}
 
-		const userInfo = req.userInfo;
+		const studentInfo = req.studentInfo;
 
 		let form = await Form.findOne({
 			$or: [
-				{ email: userInfo?.email },
-				{ phoneNo: userInfo?.phoneNo },
-				{ rollNo: userInfo?.rollNo },
+				{ email: studentInfo?.email },
+				{ phoneNo: studentInfo?.phoneNo },
+				{ rollNo: studentInfo?.rollNo },
 			],
 		});
 
@@ -23,12 +23,18 @@ export const formDetails = asyncHandler(async function (req, res, next) {
 			throw new Error("Student already exists");
 		}
 
-		form = await Form.create({ ...req?.userInfo });
+		form = await Form.create({ ...studentInfo });
 
 		if (!form) {
 			res.status(400);
 			throw new Error("Form not created");
 		}
+
+		form = form.toObject();
+		delete form.__v;
+		delete form._id;
+		delete form.createdAt;
+		delete form.updatedAt;
 
 		return res.status(201).json({
 			data: form,

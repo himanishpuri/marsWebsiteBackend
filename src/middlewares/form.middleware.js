@@ -72,12 +72,12 @@ export const checkFormDetails = asyncHandler(async function (req, res, next) {
 		}
 
 		//TODO: add Validation for department.
-		req.userInfo = {
-			fullName,
+		req.studentInfo = {
+			fullName: fullName.toLowerCase(),
 			rollNo,
 			email,
 			phoneNo,
-			department,
+			department: department.toLowerCase(),
 			branch: branch.toUpperCase(),
 			year,
 		};
