@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "backend for mars form",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "\"\""
   },
