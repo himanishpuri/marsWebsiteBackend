@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 
-const checkFormDetails = asyncHandler(async function (req, res, next) {
+export const checkFormDetails = asyncHandler(async function (req, res, next) {
 	const { fullName, rollNo, email, phoneNo, department, branch, year } =
 		req.body;
 
@@ -31,6 +31,11 @@ const checkFormDetails = asyncHandler(async function (req, res, next) {
 			throw new Error(
 				"Phone number should be of 10 digits and should be a number",
 			);
+		}
+
+		if (!email.includes("@thapar.edu")) {
+			res.status(400);
+			throw new Error("Enter a valid Thapar Email ID.");
 		}
 
 		const validBranches = [
@@ -67,7 +72,15 @@ const checkFormDetails = asyncHandler(async function (req, res, next) {
 		}
 
 		//TODO: add Validation for department.
-
+		req.userInfo = {
+			fullName,
+			rollNo,
+			email,
+			phoneNo,
+			department,
+			branch,
+			year,
+		};
 		next();
 	} catch (error) {
 		res.json({ message: error.message });
